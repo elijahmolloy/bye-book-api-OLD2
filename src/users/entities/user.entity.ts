@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { HydratedDocument } from 'mongoose';
+import { Document, HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true })
-export class User {
+export class User extends Document {
 	@Prop()
 	@ApiProperty({})
 	firstName: string;
@@ -14,11 +14,11 @@ export class User {
 	@ApiProperty({})
 	lastName: string;
 
-	@Prop()
+	@Prop({ index: true, unique: true })
 	@ApiProperty({})
-	emailAddress: string;
+	email: string;
 
-	@Prop()
+	@Prop({ select: true })
 	_password: string;
 
 	@Prop()

@@ -2,17 +2,23 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiNotImplementedResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UsersService } from 'src/users/users.service';
+import { TokensService } from 'src/tokens/tokens.service';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor(
+		private readonly authService: AuthService,
+		private readonly usersService: UsersService,
+		private readonly tokensService: TokensService
+	) {}
 
 	@Post('register')
 	async register(@Body() createUserDto: CreateUserDto) {
-		if (!createUserDto) {
-
-		}
+		const user = await this.usersService.create(createUserDto);
+		const tokens = await this.tokensService.generateAuthTokens(user);
+		// TokensService.generateAuthTokens
 
 		return ApiNotImplementedResponse();
 	}
