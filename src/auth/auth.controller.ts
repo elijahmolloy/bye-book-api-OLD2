@@ -1,6 +1,7 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiNotImplementedResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -8,7 +9,11 @@ export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Post('register')
-	async register() {
+	async register(@Body() createUserDto: CreateUserDto) {
+		if (!createUserDto) {
+
+		}
+
 		return ApiNotImplementedResponse();
 	}
 
