@@ -9,11 +9,13 @@ async function bootstrap() {
 		type: VersioningType.URI
 	});
 
-	app.useGlobalPipes(new ValidationPipe({
-		whitelist: true,
-		forbidNonWhitelisted: true,
-		transform: true
-	}));
+	app.useGlobalPipes(
+		new ValidationPipe({
+			whitelist: true,
+			forbidNonWhitelisted: true,
+			transform: true
+		})
+	);
 
 	const config = new DocumentBuilder()
 		.setTitle('Bye Book API')
@@ -22,7 +24,7 @@ async function bootstrap() {
 
 	const document = SwaggerModule.createDocument(app, config);
 	SwaggerModule.setup('api', app, document);
-	
+
 	await app.listen(3000);
 }
 
