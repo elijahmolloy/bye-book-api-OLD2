@@ -16,16 +16,30 @@ import * as bcrypt from 'bcrypt';
 				name: User.name,
 				useFactory: () => {
 					const schema = UserSchema;
+
+					/**
+					 * Hash password anytime it has changed (for new accounts and for password edits on existing accounts)
+					 */
 					schema.pre('save', async function (next) {
 						const user = this;
-						if (user.isModified('_password')) {
-							user._password = await bcrypt.hash(
-								user._password,
+						if (user.isModified('password')) {
+							user.password = await bcrypt.hash(
+								user.password,
 								12
 							);
 						}
 						next();
 					});
+
+					/**
+					 * Determine if input password matches stored user account password 
+					 * @param password 
+					 * @returns 
+					 */
+					schema.methods.isPasswordMatch = async function (password: string) {
+						const user = this;
+						return await bcrypt.compare(password, user.password);
+					}
 
 					return schema;
 				}

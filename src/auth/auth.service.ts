@@ -1,16 +1,22 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
-import { ApiNotImplementedResponse } from '@nestjs/swagger';
+import { Injectable, NotImplementedException, UnauthorizedException } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
+import { LoginDto } from './dto/login.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-	constructor() {}
+	constructor(private readonly usersService: UsersService) {}
 
 	async loginUserWithEmailAndPassword(
-		email: string,
-		password: string
+		loginDto: LoginDto
 	): Promise<User> {
-		throw new NotImplementedException();
+		const user = await this.usersService.findOneByEmail(loginDto.email);
+
+		if (!user || !(await user.isPasswordMatch(loginDto.password))) {
+			throw new UnauthorizedException('Incorrect email or password');
+		}
+
+		return user;
 	}
 
 	async logout(refreshToken: string) {

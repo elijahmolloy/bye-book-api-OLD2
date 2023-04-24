@@ -29,3 +29,5 @@ export class Token extends Document {
 	@Prop()
 	blacklisted: boolean;
 }
+
+export const TokenSchema = SchemaFactory.createForClass(Token);

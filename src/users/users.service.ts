@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotImplementedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -18,10 +18,10 @@ export class UsersService {
 	 */
 	async create(createUserDto: CreateUserDto) {
 		if (await this.isEmailTaken(createUserDto.email)) {
+			throw new BadRequestException('Email is taken');
 		}
-		const createdUser = new this.userModel(createUserDto);
 
-		return await createdUser.save();
+		return await new this.userModel(createUserDto).save();
 	}
 
 	findAll() {
@@ -33,7 +33,7 @@ export class UsersService {
 	}
 
 	async findOneByEmail(email: string): Promise<User> {
-		throw new NotImplementedException();
+		return await this.userModel.findOne({ email: email });
 	}
 
 	update(id: number, updateUserDto: UpdateUserDto) {
@@ -49,6 +49,4 @@ export class UsersService {
 
 		return !!user;
 	}
-
-	private async hashPassword() {}
 }
