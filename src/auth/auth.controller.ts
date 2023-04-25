@@ -8,7 +8,6 @@ import { AuthResponse } from './dto/register-response.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { AuthTokenDto, AuthTokensDto } from 'src/tokens/dto/auth-tokens-response.dto';
 import { LoginDto } from './dto/login.dto';
-import { AuthDto } from './dto/auth.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -19,11 +18,6 @@ export class AuthController {
 		private readonly tokensService: TokensService
 	) {}
 
-	/**
-	 * Register a new account
-	 * @param createUserDto 
-	 * @returns 
-	 */
 	@Post('register')
 	async register(@Body() createUserDto: CreateUserDto): Promise<AuthResponse> {
 		const user = await this.usersService.create(createUserDto);
@@ -41,11 +35,6 @@ export class AuthController {
 		});
 	}
 
-	/**
-	 * Login to an existing account
-	 * @param loginDto 
-	 * @returns 
-	 */
 	@Post('login')
 	async login(@Body() loginDto: LoginDto): Promise<AuthResponse> {
 		const user = await this.authService.loginUserWithEmailAndPassword(loginDto)
@@ -64,8 +53,8 @@ export class AuthController {
 	}
 
 	@Post('logout')
-	async logout(@Body() authDto: AuthDto) {
-		await this.tokensService.deleteRefreshToken(authDto.refreshToken);
+	async logout() {
+		throw new NotImplementedException();
 	}
 
 	@Post('refresh-tokens')

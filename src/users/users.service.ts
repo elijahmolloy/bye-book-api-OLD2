@@ -25,55 +25,25 @@ export class UsersService {
 	}
 
 	findAll() {
-		// return await this.userModel.
 		return `This action returns all users`;
 	}
 
-	/**
-	 * 
-	 * @param id 
-	 * @returns 
-	 */
-	async findOne(id: number): Promise<User> {
-		return await this.userModel.findById(id);
+	findOne(id: number) {
+		return `This action returns a #${id} user`;
 	}
 
-	/**
-	 * 
-	 * @param email 
-	 * @returns 
-	 */
 	async findOneByEmail(email: string): Promise<User> {
 		return await this.userModel.findOne({ email: email });
 	}
 
-	/**
-	 * 
-	 * @param id 
-	 * @param updateUserDto 
-	 * @returns 
-	 */
 	update(id: number, updateUserDto: UpdateUserDto) {
 		return `This action updates a #${id} user`;
 	}
 
-	/**
-	 * 
-	 * @param id 
-	 */
-	async remove(id: number) {
-		const deletedUser = await this.userModel.findByIdAndDelete(id);
-
-		if (!deletedUser) {
-			throw new BadRequestException();
-		}
+	remove(id: number) {
+		return `This action removes a #${id} user`;
 	}
 
-	/**
-	 * 
-	 * @param email 
-	 * @returns 
-	 */
 	private async isEmailTaken(email: string): Promise<boolean> {
 		const user = await this.userModel.findOne({ email });
 

@@ -2,19 +2,11 @@ import { Injectable, NotImplementedException, UnauthorizedException } from '@nes
 import { User } from 'src/users/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from 'src/users/users.service';
-import { TokensService } from 'src/tokens/tokens.service';
-import { AuthDto } from './dto/auth.dto';
-import { TokenType } from 'src/tokens/enum/type.enum';
 
 @Injectable()
 export class AuthService {
-	constructor(private readonly usersService: UsersService, private readonly tokensService: TokensService) {}
+	constructor(private readonly usersService: UsersService) {}
 
-	/**
-	 * Login to account with email and password
-	 * @param loginDto 
-	 * @returns 
-	 */
 	async loginUserWithEmailAndPassword(
 		loginDto: LoginDto
 	): Promise<User> {
@@ -27,21 +19,12 @@ export class AuthService {
 		return user;
 	}
 
-	async refreshAuth(authDto: AuthDto) {
-		try {
-			const refreshToken = await this.tokensService.verifyToken(authDto.refreshToken, TokenType.REFRESH);
-			console.log(`refreshToken.user: ${refreshToken.user}`);
+	async logout(refreshToken: string) {
+		throw new NotImplementedException();
+	}
 
-			const user = await this.usersService.findOne(+refreshToken.user)
-			if (!user) {
-				throw new Error();
-			}
-
-			await this.tokensService.deleteRefreshToken(refreshToken.token);
-			return this.tokensService.generateAuthTokens(user);
-		} catch (error) {
-
-		}
+	async refreshAuth(refreshToken: string) {
+		throw new NotImplementedException();
 	}
 
 	async resetPassword(resetPasswordToken: string, newPassword: string) {

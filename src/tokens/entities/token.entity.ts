@@ -9,6 +9,7 @@ export type TokenDocument = HydratedDocument<Token>;
 @Schema({ timestamps: true })
 export class Token extends Document {
 	@Prop()
+	@ApiProperty({})
 	token: string;
 
 	@Prop({
@@ -22,6 +23,7 @@ export class Token extends Document {
 	type: TokenType;
 
 	@Prop()
+	@ApiProperty({})
 	expires: Date;
 
 	@Prop()

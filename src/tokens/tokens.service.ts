@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
 import { User } from 'src/users/entities/user.entity';
 import { TokenType } from './enum/type.enum';
@@ -8,7 +8,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Token } from './entities/token.entity';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
-import { TLSSocket } from 'tls';
 
 @Injectable()
 export class TokensService {
@@ -188,17 +187,5 @@ export class TokensService {
 		);
 
 		return verifyEmailToken;
-	}
-
-	/**
-	 * 
-	 * @param token 
-	 */
-	async deleteRefreshToken(token: string) {	
-		const deletedToken = await this.tokenModel.findOneAndDelete({ token, type: TokenType.REFRESH });
-
-		if (!deletedToken) {
-			throw new BadRequestException();
-		}
 	}
 }
